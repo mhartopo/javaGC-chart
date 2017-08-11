@@ -50,7 +50,7 @@ while (i <= 9 ) :
   lats = spl.latlog_sorted(fdir + fname + ".txt")
   t = np.arange(0.1, 150.0, 0.001)
   cdf_res = cdf_arr(lats, t)
-  plt.plot(t, cdf_res, "r--")
+  plt.plot(t, cdf_res)
   plt.xlabel('latency time (ms)')
   plt.ylabel('CDF')
   #plt.title(title)

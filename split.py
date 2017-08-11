@@ -16,6 +16,7 @@ def latency_log(fileName):
   for line in f:
     time = split_log(line)
     if time != "nothing" :
+      time = time.replace("real=","")
       times.append(float(time.replace(",", "."))*1000)
   return times
 def latlog_sorted(fileName):
