@@ -43,23 +43,35 @@ fname = raw_input()
 print "Enter Chart Title : "
 title = raw_input()
 '''
-titles = ["Parallel Scavenge GC Latency","G1G1 Latency","Concurrent Mark Sweep GC Latency"]
+titles = ["GC Latency - Heap Size 512 MB","GC Latency - Heap Size 768 MB","GC Latency - Heap Size 1024 MB"]
 i = 1
+j = 0
 while (i <= 9 ) :
-  fname = "log" + str(i)
   fdir = "log/"
-  lats = spl.latlog_sorted(fdir + fname + ".txt")
+  latsPar = spl.latlog_sorted(fdir + "log" + str(i) + ".txt")
   t = np.arange(0.1, 150.0, 0.001)
-  cdf_res = cdf_arr(lats, t)
-  plt.plot(t, cdf_res)
+  cdf_res = cdf_arr(latsPar, t)
+  
+  i+=1
+  latsg1 = spl.latlog_sorted(fdir + "log" + str(i) + ".txt")
+  cdfg1 = cdf_arr(latsg1, t)
+
+  i += 1
+  latscms = spl.latlog_sorted(fdir + "log" + str(i) + ".txt")
+  cdfcms = cdf_arr(latscms, t)
+
+  line_par, = plt.plot(t, cdf_res, label='Line Par')
+  line_g1, = plt.plot(t, cdfg1, label='Line G1')
+  line_cms, = plt.plot(t, cdfcms, label='Line Cms')
+  plt.legend([line_par, line_g1, line_cms], ['Parallel', 'G1', 'CMS'])
+ 
   plt.xlabel('latency time (ms)')
   plt.ylabel('CDF')
-  print titles[(i-1)%3 ]
-  plt.title(titles[(i-1)%3 ])
-  chartName  = "chart/" + fname + "chart" + ".png" 
-  print "save chart : " + chartName
-  plt.savefig(chartName)
+  print "save chart : " + titles[j] + ".jpg"
+  plt.title(titles[j])
+  plt.savefig(titles[j])
+  plt.show()
   i += 1
+  j += 1
   plt.clf()
 print "done"
-#plt.show()
